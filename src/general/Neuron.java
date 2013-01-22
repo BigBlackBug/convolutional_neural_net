@@ -41,5 +41,10 @@ public class Neuron {
 	public double getWeightFrom(int j) {
 		return connections.get(j).weight.value;
 	}
+	
+	public void updateWeightFrom(int i,double delta) {
+		Weight prevWeight = connections.get(i).weight;
+		prevWeight.value+=delta;
+	}
 
 }

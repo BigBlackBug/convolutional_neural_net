@@ -34,7 +34,7 @@ public class FullyConnectedLayer extends AbstractLayer{
 	@Override
 	protected void finalizeLayer() {
 		for (Neuron neuron : neurons) {
-			for(Neuron otherNeuron:prevLayer.getNeurons()){
+			for(Neuron otherNeuron: prevLayer.getNeurons()){
 				neuron.addConnection(new Connection(otherNeuron, new Weight()));
 			}
 			neuron.bias=new Weight();
@@ -42,7 +42,7 @@ public class FullyConnectedLayer extends AbstractLayer{
 	}
 
 	@Override
-	public List<Double> activate() {
+	public List<Double> activateLayer() {
 		List<Double> output=new ArrayList<Double>();
 		for (Neuron neuron : neurons) {
 			output.add(neuron.activate(activator));
@@ -65,14 +65,14 @@ public class FullyConnectedLayer extends AbstractLayer{
 		return neurons.size();
 	}
 	
-	@Override
-	public void computeSensivity() {
-		for (int j = 0; j < size(); j++) {
-			Neuron neuron = neurons.get(j);
-			double sensivity = activator.derivative(neuron.netValue)*getSum(nextLayer, j);
-			neuron.setSensivity(sensivity);
-		}
-	}
+//	@Override
+//	public void computeSensivity() {
+//		for (int j = 0; j < size(); j++) {
+//			Neuron neuron = neurons.get(j);
+//			double sensivity = activator.derivative(neuron.netValue)*getSum(nextLayer, j);
+//			neuron.setSensivity(sensivity);
+//		}
+//	}
 
 	private double getSum(AbstractLayer nLayer,int j) {
 		double value=0;

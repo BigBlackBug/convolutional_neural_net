@@ -9,20 +9,24 @@ import java.util.List;
 
 import activation.ActivationFunction;
 
+import convolution.FeatureMap;
 import convolution.ImageInputNeuron;
 
 public class ImageInputLayer extends AbstractLayer{
 
 	private BufferedImage image;
+	private int height;
+	private int width;
 	private NeuronMatrix neurons=new NeuronMatrix();
 
-	public ImageInputLayer(ActivationFunction activator,BufferedImage image){
+	public ImageInputLayer(ActivationFunction activator,int width,int height){
 		super(activator);
-		this.image=image;
+		this.height=height;
+		this.width=width;
 	}
 	
 	@Override
-	public List<Double> activate() {
+	public List<Double> activateLayer() {
 		List<Double> result=new ArrayList<Double>();
 		for(Neuron neuron:neurons.asList()){
 			ImageInputNeuron imageNeuron=((ImageInputNeuron)neuron);
@@ -33,9 +37,10 @@ public class ImageInputLayer extends AbstractLayer{
 
 	@Override
 	protected void finalizeLayer() {
-		for(int i=0;i<image.getWidth();i++){
-			ArrayList<Neuron> list=new ArrayList<Neuron>();
-			for(int j=0;j<image.getHeight();j++){
+		neurons.clear();
+		for (int i = 0; i < width; i++) {
+			ArrayList<Neuron> list = new ArrayList<Neuron>();
+			for (int j = 0; j < height; j++) {
 				list.add(new ImageInputNeuron(image, i, j));
 			}
 			neurons.add(list);
@@ -49,7 +54,8 @@ public class ImageInputLayer extends AbstractLayer{
 
 	@Override
 	public int size() {//TODO only squares are currently supported
-		return image.getWidth();
+//		return image.getWidth();
+		return width;
 	}
 
 	@Override
@@ -74,12 +80,16 @@ public class ImageInputLayer extends AbstractLayer{
 
 	@Override
 	public Neuron get(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		return neurons.asList().get(i);
 	}
 
-	@Override
-	public void computeSensivity() {
-		
+	public void setImage(BufferedImage image) {
+		this.image=image;
+		finalizeLayer();
 	}
+
+//	@Override
+//	public void computeSensivity() {
+//		
+//	}
 }

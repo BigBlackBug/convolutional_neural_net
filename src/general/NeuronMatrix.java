@@ -31,4 +31,8 @@ public class NeuronMatrix {
 	public int size() {
 		return size;
 	}
+
+	public void clear() {
+		neurons.clear();
+	}
 }

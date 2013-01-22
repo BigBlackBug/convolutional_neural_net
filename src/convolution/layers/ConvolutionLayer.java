@@ -29,7 +29,7 @@ public class ConvolutionLayer extends AbstractLayer{
 	}
 	
 	@Override
-	public List<Double> activate(){
+	public List<Double> activateLayer(){
 		List<Double> output=new ArrayList<Double>();
 		for (FeatureMap fm : featureMaps) {
 			output.addAll(fm.activate());
@@ -39,7 +39,12 @@ public class ConvolutionLayer extends AbstractLayer{
 
 	@Override
 	protected void finalizeLayer() {
-		fmSize=1+(prevLayer.size()-kernelSize)/kernelStep;
+		if(prevLayer instanceof ImageInputLayer){
+			fmSize=1+(prevLayer.size()-kernelSize)/kernelStep;
+		}else{
+			ConvolutionLayer l=(ConvolutionLayer)prevLayer;
+			fmSize=1+(l.fmSize-kernelSize)/kernelStep;
+		}
 		for (int i = 0; i < fmCount; i++) {
 			featureMaps.add(new FeatureMap(prevLayer, activator, kernelStep, kernelSize, fmSize));
 		}
@@ -73,10 +78,10 @@ public class ConvolutionLayer extends AbstractLayer{
 		return getNeurons().get(i);
 	}
 
-	@Override
-	public void computeSensivity() {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void computeSensivity() {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }

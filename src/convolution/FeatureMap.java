@@ -27,15 +27,16 @@ public class FeatureMap {
 		this.activator=activator;
 		this.fmSize = fmSize;
 		initNeurons();
-		if(previousLayer instanceof ConvolutionLayer){
-			ConvolutionLayer layer=(ConvolutionLayer)previousLayer;
-			initWeights(layer.getFeatureMaps().size());
-			init(layer);
-		}else if(previousLayer instanceof ImageInputLayer){
-			ImageInputLayer layer=(ImageInputLayer)previousLayer;
-			initWeights();
-			init(layer);
-		}
+		init(previousLayer);
+//		if(previousLayer instanceof ConvolutionLayer){
+//			ConvolutionLayer layer=(ConvolutionLayer)previousLayer;
+////			initWeights(layer.getFeatureMaps().size());
+//			init(layer);
+//		}else if(previousLayer instanceof ImageInputLayer){
+//			ImageInputLayer layer=(ImageInputLayer)previousLayer;
+////			initWeights(0);
+//			init(layer);
+//		}
 		
 	}
 
@@ -47,11 +48,8 @@ public class FeatureMap {
 		kernel=new BiasedKernel(kernelsCount, kernelSize);
 	}
 	
-	private void initWeights(){//prev featuremap size
-		kernel=new BiasedKernel(0, kernelSize);
-	}
-	
 	private void initNeurons(){
+		neurons=new NeuronMatrix();
 		for (int i = 0; i < fmSize; i++) {
 			ArrayList<Neuron> list=new ArrayList<Neuron>();
 			for (int j = 0; j < fmSize; j++) {
@@ -60,8 +58,16 @@ public class FeatureMap {
 			neurons.add(list);
 		}
 	}
-	
-	private void init(ConvolutionLayer layer){
+	private void init(AbstractLayer prevLayer){
+		if(prevLayer instanceof ConvolutionLayer){
+			ConvolutionLayer layer=(ConvolutionLayer)prevLayer;
+			initConvolutional(layer);
+		}else if(prevLayer instanceof ImageInputLayer){
+			ImageInputLayer layer=(ImageInputLayer)prevLayer;
+			initImageInput(layer);
+		}
+	}
+	private void initConvolutional(ConvolutionLayer layer){
 		List<FeatureMap> featureMaps=layer.getFeatureMaps();
 		initWeights(featureMaps.size());
 		
@@ -76,7 +82,7 @@ public class FeatureMap {
 		}
 	}
 
-	private void init(ImageInputLayer layer){
+	private void initImageInput(ImageInputLayer layer){
 		initWeights(1);
 		for (int i = 0; i < fmSize; i++) {
 			for (int j = 0; j < fmSize; j++) {

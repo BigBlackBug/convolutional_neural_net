@@ -8,19 +8,19 @@ import activation.ActivationFunction;
 import activation.EmptyActivator;
 
 
-public class MockLayer extends AbstractLayer{
+class MockLayer extends AbstractLayer{
 	
 	public MockLayer() {
 		super(new EmptyActivator());
 	}
-
+	
 	@Override
 	protected void finalizeLayer() {
 		throw new RuntimeException("not imlpemented yet");
 	}
 
 	@Override
-	public List<Double> activate() {
+	public List<Double> activateLayer() {
 		throw new RuntimeException("not imlpemented yet");
 	}
 
@@ -44,9 +44,9 @@ public class MockLayer extends AbstractLayer{
 		throw new RuntimeException("not imlpemented yet");
 	}
 
-	@Override
-	public void computeSensivity() {
-		throw new RuntimeException("not imlpemented yet");
-	}
+//	@Override
+//	public void computeSensivity() {
+//		throw new RuntimeException("not imlpemented yet");
+//	}
 
 }
