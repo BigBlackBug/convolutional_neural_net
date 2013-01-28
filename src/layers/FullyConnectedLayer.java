@@ -1,4 +1,4 @@
-package convolution.layers;
+package layers;
 
 import general.Connection;
 import general.Neuron;
@@ -10,7 +10,7 @@ import java.util.List;
 import activation.ActivationFunction;
 
 public class FullyConnectedLayer extends AbstractLayer{
-	private List<Neuron> neurons=new ArrayList<Neuron>();
+	protected List<Neuron> neurons=new ArrayList<Neuron>();
 	
 	public FullyConnectedLayer(ActivationFunction activator, int layerSize) {
 		super(activator);

@@ -2,21 +2,19 @@ package training;
 
 import general.Neuron;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 import layers.AbstractLayer;
-
 import activation.ActivationFunction;
-import convolution.main.ConvolutionalNeuralNetwork;
+import convolution.main.GeneralNeuralNetwork;
 
-public class BackPropagation {
-	private static final double LEARNING_RATE = 0.8;
-	private ConvolutionalNeuralNetwork nn;
-	private double[] gradients;
-	private double[] prevGradients;
+public class Bpp2 {
+	private static final double LEARNING_RATE = 0.2;
+	private GeneralNeuralNetwork nn;
+//	private double[] gradients;
+//	private double[] prevGradients;
 
-	public BackPropagation(ConvolutionalNeuralNetwork nn) {
+	public Bpp2(GeneralNeuralNetwork nn) {
 		this.nn = nn;
 	}
 	private void computeSensivityLast(AbstractLayer lastLayer, List<Double> target){
@@ -47,47 +45,46 @@ public class BackPropagation {
 		}
 		return value;
 	}
-	
+
 	public void updateWeights(AbstractLayer layer){
 		double delta=0;
 		List<Double> input = layer.getPrevLayer().getLastOutput();
 		for(int j=0;j<layer.size();j++){
 			Neuron currentNeuron = layer.get(j);
 			delta=LEARNING_RATE*currentNeuron.sensivity;
-			currentNeuron.bias.value=delta;
+			currentNeuron.updateBias(delta);
 			for (int i = 0; i < input.size(); i++) {
+				delta=LEARNING_RATE*currentNeuron.sensivity*input.get(i);
 				delta*=input.get(i);
-				currentNeuron.updateWeightFrom(j, delta);
+				currentNeuron.updateWeightFrom(i, delta);
 			}
 		}
 	}
 	
-	public void train(BufferedImage image, List<Double> target){
-
-		long maxEpochCount=10000000000L;
-		double epoch=0;
+	public void train(List<Pair<List<Double>, List<Double>>> pairs) {
 		double error;
+		int epoch=0;
+		long maxEpochCount=100000000L;
 		do {
 			error=0;
-//			for (Pair<List<Double>, List<Double>> pair : pairs) {
-				error += iteration(image, target);
-//			}
-//			error/=pairs.size();
+			for (Pair<List<Double>, List<Double>> pair : pairs) {
+				error += iteration(pair.first, pair.second);
+			}
+			error/=pairs.size();
 			System.out.println(error);
 		} while(error>0.01 && ++epoch<maxEpochCount);
-		
-		
-	}
+		System.out.println(epoch);
 	
-	public double iteration(BufferedImage image, List<Double> target){
+	} 
+	
+	public double iteration(List<Double> input, List<Double> target){
 		AbstractLayer layer=nn.getLastLayer();
-		List<Double> output = nn.compute(image);
+		List<Double> output = nn.compute(input);
 		computeSensivityLast(layer, target);
 		List<AbstractLayer> layers = nn.getLayers();
 		for (int i = layers.size() - 2; i > 0; i--) {
 			computeSensivity(layers.get(i));
 		}
-		
 		for (int i = 1; i < layers.size(); i++) {
 			updateWeights(layers.get(i));
 		}

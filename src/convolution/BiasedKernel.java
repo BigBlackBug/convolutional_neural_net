@@ -1,5 +1,6 @@
 package convolution;
 
+
 import general.Weight;
 
 import java.util.ArrayList;

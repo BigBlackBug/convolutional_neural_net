@@ -1,4 +1,4 @@
-package convolution.layers;
+package layers;
 
 import general.Neuron;
 

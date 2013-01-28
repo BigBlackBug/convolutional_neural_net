@@ -7,10 +7,10 @@ import general.NeuronMatrix;
 import java.util.ArrayList;
 import java.util.List;
 
+import layers.AbstractLayer;
+import layers.ConvolutionLayer;
+import layers.ImageInputLayer;
 import activation.ActivationFunction;
-import convolution.layers.AbstractLayer;
-import convolution.layers.ConvolutionLayer;
-import convolution.layers.ImageInputLayer;
 
 public class FeatureMap {
 	private int kernelStep;

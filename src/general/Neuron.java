@@ -6,19 +6,21 @@ import java.util.List;
 import activation.ActivationFunction;
 
 public class Neuron {
-
-	protected List<Connection> connections=new ArrayList<Connection>();
-	public Weight bias;
 	public double netValue;
 	public double output;
 	public double sensivity;
 	public boolean activated=false;
+	public List<Connection> connections=new ArrayList<Connection>();
 	
+	public Weight bias;
 	
 	public void addConnection(Connection connection) {
 		connections.add(connection);
 	}
 	
+	/* (non-Javadoc)
+	 * @see general.INeuron#activate(activation.ActivationFunction)
+	 */
 	public double activate(ActivationFunction activator){
 		activated=true;
 		output = activator.activate(computeNetValue());//TODO cache net value
@@ -45,6 +47,10 @@ public class Neuron {
 	public void updateWeightFrom(int i,double delta) {
 		Weight prevWeight = connections.get(i).weight;
 		prevWeight.value+=delta;
+	}
+
+	public void updateBias(double d) {
+		bias.value+=d;
 	}
 
 }

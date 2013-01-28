@@ -1,5 +1,6 @@
-package convolution.layers;
+package layers;
 
+import general.Neuron;
 import general.Neuron;
 import general.NeuronMatrix;
 

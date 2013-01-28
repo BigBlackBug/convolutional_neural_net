@@ -1,14 +1,13 @@
 package general;
 
-public class Weight {
+import java.util.Random;
 
+public class Weight {
+	private static final Random RANDOM = new Random();
 	public double value;
 	
-	public Weight(double weight) {
-		this.value = weight;
-	}
 	public Weight(){
-		value=Math.random()*2-1;
+		value=RANDOM.nextDouble()*0.6-1;
 	}
 
 }

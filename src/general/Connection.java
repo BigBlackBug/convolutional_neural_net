@@ -1,5 +1,7 @@
 package general;
 
+import general.Neuron;
+
 public class Connection {
 	public Neuron neuron;
 	public Weight weight;

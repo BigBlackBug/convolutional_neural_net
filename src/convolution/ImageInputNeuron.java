@@ -20,10 +20,10 @@ public class ImageInputNeuron extends Neuron{
 
 	@Override
 	public double computeNetValue() {
-		Color color = new Color( image.getRGB(x, y));
-		int red=color.getRed();
-		int green=color.getGreen();
-		int blue=color.getBlue();
+		Color color = new Color(image.getRGB(x, y));
+		int red = color.getRed();
+		int green = color.getGreen();
+		int blue = color.getBlue();
 		return Math.pow(0.2126*Math.pow(red,2.2) + 0.7152*Math.pow(green,2.2) + 0.0722*Math.pow(blue,2.2),1/2.2);
 	}
 }

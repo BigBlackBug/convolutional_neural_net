@@ -1,4 +1,4 @@
-package convolution.layers;
+package layers;
 
 import general.Neuron;
 
@@ -28,7 +28,7 @@ public abstract class AbstractLayer {
 		return prevLayer;
 	}
 	
-	public void finalize(AbstractLayer prevLayer,AbstractLayer nextLayer){//TODO maybe make it call finalize for other layers?
+	public void finalize(AbstractLayer prevLayer, AbstractLayer nextLayer){//TODO maybe make it call finalize for other layers?
 		this.nextLayer=nextLayer;
 		this.prevLayer=prevLayer;
 		finalizeLayer();
