@@ -1,9 +1,8 @@
 package layers;
 
-import general.Neuron;
-
 import java.util.List;
 
+import neurons.INeuron;
 import activation.ActivationFunction;
 
 
@@ -44,11 +43,9 @@ public abstract class AbstractLayer {
 	
 	protected abstract void finalizeLayer();
 	protected abstract List<Double> activateLayer();
-	public abstract List<Neuron> getNeurons();
-	public abstract Neuron get(int i);
+	public abstract List<INeuron> getNeurons();
+	public abstract INeuron get(int i);
 	public abstract int size();
 	public abstract int getNeuronCount();
-
-//	public abstract void computeSensivity();
 	
 }

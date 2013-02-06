@@ -1,7 +1,11 @@
-package general;
+package neurons.misc;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import neurons.INeuron;
+import neurons.Neuron;
+
 
 public class NeuronMatrix {
 	private ArrayList<ArrayList<Neuron>> neurons = new ArrayList<ArrayList<Neuron>>();
@@ -20,8 +24,8 @@ public class NeuronMatrix {
 		size += list.size();
 	}
 
-	public List<Neuron> asList() {
-		List<Neuron> result = new ArrayList<Neuron>();
+	public List<INeuron> asList() {
+		List<INeuron> result = new ArrayList<INeuron>();
 		for (ArrayList<Neuron> list : neurons) {
 			result.addAll(list);
 		}

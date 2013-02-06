@@ -1,16 +1,16 @@
 package layers;
 
-import general.Connection;
-import general.Neuron;
-import general.Weight;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import neurons.INeuron;
+import neurons.Neuron;
+import neurons.misc.Connection;
+import neurons.misc.Weight;
 import activation.ActivationFunction;
 
 public class FullyConnectedLayer extends AbstractLayer{
-	protected List<Neuron> neurons=new ArrayList<Neuron>();
+	protected List<INeuron> neurons=new ArrayList<INeuron>();
 	
 	public FullyConnectedLayer(ActivationFunction activator, int layerSize) {
 		super(activator);
@@ -18,40 +18,42 @@ public class FullyConnectedLayer extends AbstractLayer{
 			neurons.add(new Neuron());
 		}
 	}
+	
+	protected FullyConnectedLayer(ActivationFunction activator){
+		super(activator);
+	}
 
 	public List<Double> getOutput(){
 		List<Double> output=new ArrayList<Double>();
-		for(Neuron neuron:neurons){
-			if(neuron.activated){
-				output.add(neuron.output);
-			}else{
-				throw new IllegalArgumentException("neurons are not activated");
-			}
+		for(INeuron neuron:neurons){
+			output.add(neuron.getOutput());
 		}
 		return output;
 	}
 	
 	@Override
+	
 	protected void finalizeLayer() {
-		for (Neuron neuron : neurons) {
-			for(Neuron otherNeuron: prevLayer.getNeurons()){
+		for (int i = 0; i < neurons.size(); i++) {
+			Neuron neuron = (Neuron) neurons.get(i);
+			for(INeuron otherNeuron: prevLayer.getNeurons()){
 				neuron.addConnection(new Connection(otherNeuron, new Weight()));
 			}
-			neuron.bias=new Weight();
+			neuron.setBias(new Weight());
 		}
 	}
 
 	@Override
 	public List<Double> activateLayer() {
 		List<Double> output=new ArrayList<Double>();
-		for (Neuron neuron : neurons) {
+		for (INeuron neuron : neurons) {
 			output.add(neuron.activate(activator));
 		}
 		return output;
 	}
 	
 	@Override
-	public List<Neuron> getNeurons() {
+	public List<INeuron> getNeurons() {
 		return neurons;
 	}
 
@@ -65,26 +67,8 @@ public class FullyConnectedLayer extends AbstractLayer{
 		return neurons.size();
 	}
 	
-//	@Override
-//	public void computeSensivity() {
-//		for (int j = 0; j < size(); j++) {
-//			Neuron neuron = neurons.get(j);
-//			double sensivity = activator.derivative(neuron.netValue)*getSum(nextLayer, j);
-//			neuron.setSensivity(sensivity);
-//		}
-//	}
-
-	private double getSum(AbstractLayer nLayer,int j) {
-		double value=0;
-		for (int i = 0; i < nLayer.size(); i++) {
-			Neuron otherNeuron = nLayer.get(i);
-			value+=otherNeuron.sensivity*otherNeuron.getWeightFrom(j);
-		}
-		return value;
-	}
-
 	@Override
-	public Neuron get(int i) {
+	public INeuron get(int i) {
 		return neurons.get(i);
 	}
 }

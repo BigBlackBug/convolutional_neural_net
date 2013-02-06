@@ -1,6 +1,8 @@
 package activation;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
 public interface ActivationFunction {
 	public double activate(double x);

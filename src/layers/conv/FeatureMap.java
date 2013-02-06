@@ -1,15 +1,14 @@
-package convolution;
+package layers.conv;
 
-import general.Connection;
-import general.Neuron;
-import general.NeuronMatrix;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import layers.AbstractLayer;
-import layers.ConvolutionLayer;
-import layers.ImageInputLayer;
+import neurons.INeuron;
+import neurons.Neuron;
+import neurons.misc.Connection;
+import neurons.misc.NeuronMatrix;
 import activation.ActivationFunction;
 
 public class FeatureMap {
@@ -44,7 +43,7 @@ public class FeatureMap {
 //		initNeurons();
 //	}
 	
-	private void initWeights(int kernelsCount){//prev featuremap size
+	private void initWeights(int kernelsCount){//prev feeaturemap coutn
 		kernel=new BiasedKernel(kernelsCount, kernelSize);
 	}
 	
@@ -67,15 +66,15 @@ public class FeatureMap {
 			initImageInput(layer);
 		}
 	}
-	private void initConvolutional(ConvolutionLayer layer){
-		List<FeatureMap> featureMaps=layer.getFeatureMaps();
-		initWeights(featureMaps.size());
+	private void initConvolutional(ConvolutionLayer prevLayer){
+		List<FeatureMap> prevFeatureMaps=prevLayer.getFeatureMaps();
+		initWeights(prevFeatureMaps.size());
 		
-		for(int k=0; k<featureMaps.size(); k++){//6FIXME optimize cycle
+		for(int k=0; k<prevFeatureMaps.size(); k++){//6FIXME optimize cycle
 			for (int i = 0; i < fmSize; i++) {
 				for (int j = 0; j < fmSize; j++) {//100
 					Neuron neuron = neurons.get(i,j);
-					List<ArrayList<Neuron>> neurons = featureMaps.get(k).getNeuronBlock(i, j, kernelSize, kernelStep);
+					List<ArrayList<Neuron>> neurons = prevFeatureMaps.get(k).getNeuronBlock(i, j, kernelSize, kernelStep);
 					connect(neuron,neurons,k);
 				}
 			}
@@ -112,7 +111,7 @@ public class FeatureMap {
 				aNeuron.addConnection(new Connection(otherNeuron, currKernel.getWeightUnit(i, j)));
 			}
 		}//and bias
-		aNeuron.bias=kernel.bias;
+		aNeuron.setBias(kernel.bias);
 	}
 	
 	private void connect(Neuron aNeuron, List<ArrayList<Neuron>> list) {
@@ -147,7 +146,7 @@ public class FeatureMap {
 		return neurons.size();
 	}
 
-	public List<Neuron> getNeurons() {
+	public List<INeuron> getNeurons() {
 		return neurons.asList();
 	}
 }

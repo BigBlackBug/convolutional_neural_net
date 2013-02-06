@@ -1,13 +1,16 @@
-package layers;
+package layers.conv;
 
-import general.Neuron;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import neurons.INeuron;
+import neurons.Neuron;
+
+import layers.AbstractLayer;
+
 import activation.ActivationFunction;
 
-import convolution.FeatureMap;
 
 public class ConvolutionLayer extends AbstractLayer{
 	public List<FeatureMap> featureMaps=new ArrayList<FeatureMap>();
@@ -51,8 +54,8 @@ public class ConvolutionLayer extends AbstractLayer{
 	}
 
 	@Override
-	public List<Neuron> getNeurons() {//TODO cache
-		List<Neuron> neurons=new ArrayList<Neuron>();
+	public List<INeuron> getNeurons() {//TODO cache
+		List<INeuron> neurons=new ArrayList<INeuron>();
 		for (FeatureMap fm : featureMaps) {
 			neurons.addAll(fm.getNeurons());
 		}
@@ -74,7 +77,7 @@ public class ConvolutionLayer extends AbstractLayer{
 	}
 
 	@Override
-	public Neuron get(int i) {
+	public INeuron get(int i) {
 		return getNeurons().get(i);
 	}
 

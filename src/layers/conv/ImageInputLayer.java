@@ -1,17 +1,18 @@
-package layers;
+package layers.conv;
 
-import general.Neuron;
-import general.Neuron;
-import general.NeuronMatrix;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import activation.ActivationFunction;
+import neurons.INeuron;
+import neurons.Neuron;
+import neurons.conv.ImageInputNeuron;
+import neurons.misc.NeuronMatrix;
 
-import convolution.FeatureMap;
-import convolution.ImageInputNeuron;
+import layers.AbstractLayer;
+
+import activation.ActivationFunction;
 
 public class ImageInputLayer extends AbstractLayer{
 
@@ -29,7 +30,7 @@ public class ImageInputLayer extends AbstractLayer{
 	@Override
 	public List<Double> activateLayer() {
 		List<Double> result=new ArrayList<Double>();
-		for(Neuron neuron:neurons.asList()){
+		for(INeuron neuron:neurons.asList()){
 			ImageInputNeuron imageNeuron=((ImageInputNeuron)neuron);
 			result.add(imageNeuron.activate(activator));
 		}
@@ -49,7 +50,7 @@ public class ImageInputLayer extends AbstractLayer{
 	}
 
 	@Override
-	public List<Neuron> getNeurons() {
+	public List<INeuron> getNeurons() {
 		return neurons.asList();
 	}
 
@@ -69,10 +70,11 @@ public class ImageInputLayer extends AbstractLayer{
 		int startj=j*kernelStep;
 		List<ArrayList<Neuron>> block=new ArrayList<ArrayList<Neuron>>();
 		for(int ii=starti;ii<starti+kernelSize;ii++){
+			ArrayList<Neuron> theseNeurons = neurons.get(ii);
+			
 			ArrayList<Neuron> line=new ArrayList<Neuron>();
-			ArrayList<Neuron> theseNeurons = neurons.get(i);
 			for(int jj=startj;jj<startj+kernelSize;jj++){
-				line.add(theseNeurons.get(j));
+				line.add(theseNeurons.get(jj));
 			}
 			block.add(line);
 		}
@@ -80,7 +82,7 @@ public class ImageInputLayer extends AbstractLayer{
 	}
 
 	@Override
-	public Neuron get(int i) {
+	public INeuron get(int i) {
 		return neurons.asList().get(i);
 	}
 

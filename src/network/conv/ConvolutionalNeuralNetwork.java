@@ -1,11 +1,13 @@
-package convolution.main;
+package network.conv;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import network.NeuralNetwork;
+
 import layers.AbstractLayer;
-import layers.ImageInputLayer;
+import layers.conv.ImageInputLayer;
 
 
 public class ConvolutionalNeuralNetwork extends NeuralNetwork {

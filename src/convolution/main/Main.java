@@ -7,6 +7,7 @@ import java.util.List;
 
 import layers.FullyConnectedLayer;
 import layers.InputLayer;
+import network.GeneralNeuralNetwork;
 import training.Bpp2;
 import training.Pair;
 import activation.TangentFunction;
@@ -69,9 +70,10 @@ public class Main {
 		pairs.add(new Pair<List<Double>,List<Double>>(Arrays.asList(0.0,0.0), Arrays.asList(0.0)));
 		bpp.train(pairs);
 		System.out.println(3);
-		System.out.println(nn.compute(pairs.get(3).first).get(0));
+		
 		System.out.println(nn.compute(pairs.get(2).first).get(0));
 		System.out.println(nn.compute(pairs.get(1).first).get(0));
+		System.out.println(nn.compute(pairs.get(3).first).get(0));
 		System.out.println(nn.compute(pairs.get(0).first).get(0));
 
 	}

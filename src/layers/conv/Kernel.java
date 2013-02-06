@@ -1,10 +1,11 @@
-package convolution;
+package layers.conv;
 
 
-import general.Weight;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import neurons.misc.Weight;
 
 public class Kernel {
 	

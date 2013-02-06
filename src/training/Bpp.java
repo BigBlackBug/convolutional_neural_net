@@ -1,21 +1,25 @@
 package training;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import layers.AbstractLayer;
-import network.GeneralNeuralNetwork;
+import layers.conv.ConvolutionLayer;
+import layers.conv.FeatureMap;
+import network.conv.ConvolutionalNeuralNetwork;
 import neurons.INeuron;
 import neurons.Neuron;
 import neurons.misc.Connection;
 import activation.ActivationFunction;
 
-public class Bpp2 {
-	private static final double LEARNING_RATE = 0.8;
-	private GeneralNeuralNetwork nn;
+public class Bpp {
+	private static final double LEARNING_RATE = 0.3;
+//	private static final double MOMENTUM = 0.8;
+	private ConvolutionalNeuralNetwork nn;
 //	private double[] gradients;
 //	private double[] prevGradients;
 
-	public Bpp2(GeneralNeuralNetwork nn) {
+	public Bpp(ConvolutionalNeuralNetwork nn) {
 		this.nn = nn;
 	}
 	private void computeSensivityLast(AbstractLayer lastLayer, List<Double> target){
@@ -52,11 +56,14 @@ public class Bpp2 {
 //		List<Double> input = layer.getPrevLayer().getLastOutput();
 //		for(int j=0;j<layer.size();j++){
 //			Neuron currentNeuron = (Neuron) layer.get(j);
+////			delta=LEARNING_RATE*currentNeuron.getSensivity()+MOMENTUM*currentNeuron.getBias().prevDelta;
 //			delta=LEARNING_RATE*currentNeuron.getSensivity();
 //			currentNeuron.updateBias(delta);
 //			for (int i = 0; i < input.size(); i++) {
+////				delta=LEARNING_RATE*currentNeuron.getSensivity()*input.get(i)+MOMENTUM*currentNeuron.getWeightFrom(i).prevDelta;
 //				delta=LEARNING_RATE*currentNeuron.getSensivity()*input.get(i);
-////				delta*=input.get(i);
+////				delta=LEARNING_RATE*currentNeuron.getSensivity()*currentNeuron.getConnections().get(i).neuron.getOutput();
+//				delta*=input.get(i);
 //				currentNeuron.updateWeightFrom(i, delta);
 //			}
 //		}
@@ -70,30 +77,40 @@ public class Bpp2 {
 			currentNeuron.updateBias(delta);
 			for(Connection conn:currentNeuron.getConnections()){
 				double input = conn.neuron.getOutput();
-				delta=LEARNING_RATE*currentNeuron.getSensivity()*input;
-				conn.weight.value+=delta;
+				double weightDelta=delta*input;
+				conn.weight.value+=weightDelta;
 			}
-
 		}
 	}
 	
-	public void train(List<Pair<List<Double>, List<Double>>> pairs) {
+	
+	public void updateWeights(ConvolutionLayer layer){
+		double delta=0;
+		List<Double> input = layer.getPrevLayer().getLastOutput();
+		List<FeatureMap> fms = layer.getFeatureMaps();
+		for (FeatureMap fm : fms) {
+			List<INeuron> neurons = fm.getNeurons();
+			for(int i=0;i<neurons.size();i++){
+				Neuron neuron = (Neuron) neurons.get(i);
+//				neuron.getSensivity()*neuron
+			}
+		}
+	}
+	
+	public void train(BufferedImage input, List<Double> target) {
 		double error;
 		int epoch=0;
-		long maxEpochCount=1000000L;
+		long maxEpochCount=100000000L;
 		do {
 			error=0;
-			for (Pair<List<Double>, List<Double>> pair : pairs) {
-				error += iteration(pair.first, pair.second);
-			}
-			error/=pairs.size();
+			error += iteration(input, target);
 			System.out.println(error);
 		} while(error>0.01 && ++epoch<maxEpochCount);
 		System.out.println(epoch);
 	
 	} 
 	
-	public double iteration(List<Double> input, List<Double> target){
+	public double iteration(BufferedImage input, List<Double> target){
 		AbstractLayer layer=nn.getLastLayer();
 		List<Double> output = nn.compute(input);
 		computeSensivityLast(layer, target);
