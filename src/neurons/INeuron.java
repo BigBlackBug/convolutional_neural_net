@@ -1,7 +1,5 @@
 package neurons;
 
-import java.util.List;
-
 import activation.ActivationFunction;
 
 public interface INeuron {

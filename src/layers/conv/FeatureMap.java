@@ -134,8 +134,8 @@ public class FeatureMap {
 	
 	public List<Double> activate(){
 		List<Double> output=new ArrayList<Double>();
-		for (int i = 0; i < kernelSize; i++) {
-			for (int j = 0; j < kernelSize; j++) {
+		for (int i = 0; i < fmSize; i++) {
+			for (int j = 0; j < fmSize; j++) {
 				output.add(neurons.get(i, j).activate(activator));
 			}
 		}

@@ -39,13 +39,22 @@ public class ImageInputLayer extends AbstractLayer{
 
 	@Override
 	protected void finalizeLayer() {
-		neurons.clear();
-		for (int i = 0; i < width; i++) {
-			ArrayList<Neuron> list = new ArrayList<Neuron>();
-			for (int j = 0; j < height; j++) {
-				list.add(new ImageInputNeuron(image, i, j));
+		if(image!=null){
+			for (int x = 0; x < width; x++) {
+				ArrayList<Neuron> list = neurons.get(x);
+				for (int y = 0; y < height; y++) {
+					ImageInputNeuron imageNeuron = (ImageInputNeuron) list.get(y);
+					imageNeuron.setImage(image);
+				}
 			}
-			neurons.add(list);
+		}else{
+			for (int x = 0; x < width; x++) {
+				ArrayList<Neuron> list = new ArrayList<Neuron>();
+				for (int y = 0; y < height; y++) {
+					list.add(new ImageInputNeuron(image, x, y));
+				}
+				neurons.add(list);
+			}
 		}
 	}
 
@@ -87,6 +96,8 @@ public class ImageInputLayer extends AbstractLayer{
 	}
 
 	public void setImage(BufferedImage image) {
+		assert image.getWidth() == width;
+		assert image.getHeight() == height;
 		this.image=image;
 		finalizeLayer();
 	}

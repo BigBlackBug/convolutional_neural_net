@@ -31,6 +31,7 @@ public class Neuron implements INeuron {
 			value+=conn.weight.value*conn.neuron.getOutput();
 		}
 		netValue = (value+bias.value);
+		
 		return netValue;
 	}
 

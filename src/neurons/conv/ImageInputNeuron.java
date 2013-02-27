@@ -16,6 +16,16 @@ public class ImageInputNeuron extends Neuron{
 		this.x = x;
 		this.y = y;
 	}
+	
+
+	public BufferedImage getImage() {
+		return image;
+	}
+
+
+	public void setImage(BufferedImage image) {
+		this.image = image;
+	}
 
 	@Override
 	public double computeNetValue() {

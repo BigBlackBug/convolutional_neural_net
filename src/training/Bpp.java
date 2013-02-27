@@ -4,8 +4,6 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import layers.AbstractLayer;
-import layers.conv.ConvolutionLayer;
-import layers.conv.FeatureMap;
 import network.conv.ConvolutionalNeuralNetwork;
 import neurons.INeuron;
 import neurons.Neuron;
@@ -13,11 +11,9 @@ import neurons.misc.Connection;
 import activation.ActivationFunction;
 
 public class Bpp {
-	private static final double LEARNING_RATE = 0.3;
-//	private static final double MOMENTUM = 0.8;
+	private static final double LEARNING_RATE = 0.8;
+	private static final double MOMENTUM_RATE = 0.6;
 	private ConvolutionalNeuralNetwork nn;
-//	private double[] gradients;
-//	private double[] prevGradients;
 
 	public Bpp(ConvolutionalNeuralNetwork nn) {
 		this.nn = nn;
@@ -51,49 +47,20 @@ public class Bpp {
 		return value;
 	}
 
-//	public void updateWeights(AbstractLayer layer){
-//		double delta=0;
-//		List<Double> input = layer.getPrevLayer().getLastOutput();
-//		for(int j=0;j<layer.size();j++){
-//			Neuron currentNeuron = (Neuron) layer.get(j);
-////			delta=LEARNING_RATE*currentNeuron.getSensivity()+MOMENTUM*currentNeuron.getBias().prevDelta;
-//			delta=LEARNING_RATE*currentNeuron.getSensivity();
-//			currentNeuron.updateBias(delta);
-//			for (int i = 0; i < input.size(); i++) {
-////				delta=LEARNING_RATE*currentNeuron.getSensivity()*input.get(i)+MOMENTUM*currentNeuron.getWeightFrom(i).prevDelta;
-//				delta=LEARNING_RATE*currentNeuron.getSensivity()*input.get(i);
-////				delta=LEARNING_RATE*currentNeuron.getSensivity()*currentNeuron.getConnections().get(i).neuron.getOutput();
-//				delta*=input.get(i);
-//				currentNeuron.updateWeightFrom(i, delta);
-//			}
-//		}
-//	}
 	
-	public void updateWeights(AbstractLayer layer){
-		double delta=0;
-		for(int j=0;j<layer.size();j++){
+	public void updateWeights(AbstractLayer layer) {
+		double delta = 0;
+		for (int j = 0; j < layer.size(); j++) {
 			Neuron currentNeuron = (Neuron) layer.get(j);
-			delta=LEARNING_RATE*currentNeuron.getSensivity();
+			delta = LEARNING_RATE * currentNeuron.getSensivity();
 			currentNeuron.updateBias(delta);
-			for(Connection conn:currentNeuron.getConnections()){
+			for (Connection conn : currentNeuron.getConnections()) {
 				double input = conn.neuron.getOutput();
-				double weightDelta=delta*input;
-				conn.weight.value+=weightDelta;
+				delta = LEARNING_RATE * currentNeuron.getSensivity() * input
+						+ MOMENTUM_RATE * conn.weight.getPrevDelta();
+				conn.weight.updateWeight(delta);
 			}
-		}
-	}
-	
-	
-	public void updateWeights(ConvolutionLayer layer){
-		double delta=0;
-		List<Double> input = layer.getPrevLayer().getLastOutput();
-		List<FeatureMap> fms = layer.getFeatureMaps();
-		for (FeatureMap fm : fms) {
-			List<INeuron> neurons = fm.getNeurons();
-			for(int i=0;i<neurons.size();i++){
-				Neuron neuron = (Neuron) neurons.get(i);
-//				neuron.getSensivity()*neuron
-			}
+
 		}
 	}
 	
