@@ -71,7 +71,9 @@ public class Bpp {
 		do {
 			error=0;
 			error += iteration(input, target);
-			System.out.println(error);
+			if(epoch % 100==0){
+				System.out.println(error);
+			}
 		} while(error>0.01 && ++epoch<maxEpochCount);
 		System.out.println(epoch);
 	

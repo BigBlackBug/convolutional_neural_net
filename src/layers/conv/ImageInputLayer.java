@@ -40,17 +40,17 @@ public class ImageInputLayer extends AbstractLayer{
 	@Override
 	protected void finalizeLayer() {
 		if(image!=null){
-			for (int x = 0; x < width; x++) {
-				ArrayList<Neuron> list = neurons.get(x);
-				for (int y = 0; y < height; y++) {
-					ImageInputNeuron imageNeuron = (ImageInputNeuron) list.get(y);
+			for (int y = 0; y < height; y++) {
+				ArrayList<Neuron> list = neurons.get(y);
+				for (int x = 0; x < width; x++) {
+					ImageInputNeuron imageNeuron = (ImageInputNeuron) list.get(x);
 					imageNeuron.setImage(image);
 				}
 			}
 		}else{
-			for (int x = 0; x < width; x++) {
+			for (int y = 0; y < width; y++) {
 				ArrayList<Neuron> list = new ArrayList<Neuron>();
-				for (int y = 0; y < height; y++) {
+				for (int x = 0; x < height; x++) {
 					list.add(new ImageInputNeuron(image, x, y));
 				}
 				neurons.add(list);

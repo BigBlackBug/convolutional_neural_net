@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Weight {
 	private static final Random RANDOM = new Random(System.nanoTime());
-	private static final double BOUNDARY = 0.5;
+	private static final double BOUNDARY = 0.1;
 	public double value;
 	private double prevDelta;
 	

@@ -37,7 +37,7 @@ public class ConvolutionLayer extends AbstractLayer{
 		for (FeatureMap fm : featureMaps) {
 			output.addAll(fm.activate());
 		}
-		Integer.valueOf("1001", 2);
+		
 		return output;
 	}
 

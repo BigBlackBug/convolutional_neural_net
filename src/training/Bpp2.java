@@ -75,7 +75,9 @@ public class Bpp2 {
 				error += iteration(pair.first, pair.second);
 			}
 			error /= pairs.size();
-			System.out.println(error);
+			if(epoch % 1000==0){
+				System.out.println(error);
+			}
 		} while (error > 0.01 && ++epoch < maxEpochCount);
 		System.out.println(epoch);
 

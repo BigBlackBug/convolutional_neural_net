@@ -18,6 +18,7 @@ public class FeatureMap {
 	private NeuronMatrix neurons;
 	private BiasedKernel kernel;//тут веса ко всем предыдущим FM
 	private ActivationFunction activator;
+	private List<Double> output;
 	
 	public FeatureMap(AbstractLayer previousLayer, ActivationFunction activator, 
 			int kernelStep, int kernelSize, int fmSize) {
@@ -25,6 +26,7 @@ public class FeatureMap {
 		this.kernelSize = kernelSize;
 		this.activator=activator;
 		this.fmSize = fmSize;
+		this.output = new ArrayList<Double>();
 		initNeurons();
 		init(previousLayer);
 //		if(previousLayer instanceof ConvolutionLayer){
@@ -133,7 +135,7 @@ public class FeatureMap {
 	}
 	
 	public List<Double> activate(){
-		List<Double> output=new ArrayList<Double>();
+		output.clear();
 		for (int i = 0; i < fmSize; i++) {
 			for (int j = 0; j < fmSize; j++) {
 				output.add(neurons.get(i, j).activate(activator));
@@ -148,5 +150,9 @@ public class FeatureMap {
 
 	public List<INeuron> getNeurons() {
 		return neurons.asList();
+	}
+	
+	public List<Double> getOutput() {
+		return output;
 	}
 }
